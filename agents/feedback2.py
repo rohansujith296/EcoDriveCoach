@@ -1,4 +1,4 @@
-def feedback_agent_ice(input_data, model_type_choosen):
+def feedback_agent_ev(input_data, model_type_choosen):
     from langchain.llms import HuggingFaceEndpoint
     from langchain.chains.llm import LLMChain
     from langchain.prompts import PromptTemplate
@@ -10,14 +10,15 @@ def feedback_agent_ice(input_data, model_type_choosen):
     from dotenv import load_dotenv
     
     
+    
     load_dotenv()
 
 
     # Predict driving style
-    driving_style = predict_input_ice(input_data)
-    vehicle_type = model_type_choosen  # Fixed variable name
+    driving_style = predict_input_ev(input_data)
+    vehicle_type = model_type_choosen
 
-    # Define prompt
+    # Define prompt template
     prompt = PromptTemplate(
         input_variables=["vehicle_type", "driving_style"],
         template="""
@@ -45,19 +46,19 @@ Begin:
 """
     )
 
-    # LLM setup
+    # Load LLM
     llm = HuggingFaceEndpoint(
-        repo_id="google/flan-t5-base",
+        repo_id="HuggingFaceH4/zephyr-7b-beta",
         task="text-generation",
         temperature=0.4,
         max_new_tokens=150,
         huggingfacehub_api_token=os.getenv("HF_TOKEN")
     )
 
-    # Create chain
+    # Chain the LLM with the prompt
     chain = LLMChain(llm=llm, prompt=prompt)
 
-    # Run chain
+    # Get response from LLM
     llm_result = chain.run(vehicle_type=vehicle_type, driving_style=driving_style)
 
     return llm_result

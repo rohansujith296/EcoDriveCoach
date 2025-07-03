@@ -5,7 +5,7 @@ import seaborn as sns
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-import pickle
+
 
 
 
@@ -129,9 +129,6 @@ def predict_input_ice(single_input: dict):
     return pred
 
 
-#saving models
-with open('/Users/rohansujith/Desktop/Python/EcoDriveCoach/docs/model.pkl', 'wb') as f:
-    pickle.dump((model_ev, model_ice), f)
 
 
 print("success")

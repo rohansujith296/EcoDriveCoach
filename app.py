@@ -1,5 +1,11 @@
 import streamlit as st
 import pandas as pd
+from agents.feedback import feedback_agent_ice
+from agents.feedback2 import feedback_agent_ev
+import os 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # --- EV Model Input Fields ---
 ev_fields = [
@@ -42,8 +48,9 @@ ice_types = {
 }
 
 st.title("EcoDriveCoach")
+
+# ---- EV Input Form ----
 def input_ev_fields():
-    
     ev_input = {}
     for field in ev_fields:
         if field == "terrain_type":
@@ -51,25 +58,38 @@ def input_ev_fields():
         elif field in ["regen_braking_enabled", "eco_mode_enabled"]:
             ev_input[field] = st.selectbox(field.replace("_", " ").capitalize(), [0, 1])
         else:
-            ev_input[field] = st.number_input(field.replace("_", " ").capitalize(), value=0.0 if ev_types[field]==float else 0)
-    
+            ev_input[field] = st.number_input(field.replace("_", " ").capitalize(), value=0.0 if ev_types[field] == float else 0)
     return ev_input
+
+# ---- ICE Input Form ----
 def input_ice_fields():
     ice_input = {}
     for field in ice_fields:
-        ice_input[field] = st.number_input(field.replace("_", " ").capitalize(), value=0.0 if ice_types[field]==float else 0)
+        ice_input[field] = st.number_input(field.replace("_", " ").capitalize(), value=0.0 if ice_types[field] == float else 0)
     return ice_input
 
-
+# ---- Vehicle Type ----
 model_type = st.radio("Select Vehicle Type", ("EV", "ICE"))
+
+input_data = None
+feedback = None
 
 if model_type == "EV":
     st.header("EV Model Input")
-    ev_input = input_ev_fields()
-    print("EV Input:", type(ev_input), ev_input)
-
+    input_data = input_ev_fields()
 elif model_type == "ICE":
     st.header("ICE Model Input")
-    ice_input = input_ice_fields()
-    print("ICE Input:", type(ice_input), ice_input)
+    input_data = input_ice_fields()
 
+# ---- Submit Button ----
+if st.button("Submit"):
+    st.write("Submitting your data...")
+    st.success("Successfully submitted. Waiting for response...")
+
+    if model_type == "EV":
+        feedback = feedback_agent_ev(input_data, model_type)
+    elif model_type == "ICE":
+        feedback = feedback_agent_ice(input_data, model_type)
+
+    st.subheader("🧠 EcoDrive Feedback:")
+    st.write(feedback)
