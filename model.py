@@ -123,7 +123,7 @@ def predict_input_ice(single_input: dict):
     input_df = pd.DataFrame([single_input])
     input_df[n_col_ice] = scaler_ice.transform(input_df[n_col_ice])
     input_df[encoded_col_ice] = encoder_ice.transform(input_df[c_col_ice])
-    input_df = input_df.drop(columns=c_col_ev)
+    input_df = input_df.drop(columns=c_col_ice)
     X_input_ice = input_df[n_col_ice + encoded_col_ice]
     pred = model_ice.predict(X_input_ice)[0]
     return pred
