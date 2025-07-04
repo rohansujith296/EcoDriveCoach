@@ -47,6 +47,7 @@ ice_types = {
     "coolant_temp": float
 }
 
+
 st.title("EcoDriveCoach")
 
 # ---- EV Input Form ----
