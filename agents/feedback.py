@@ -1,5 +1,5 @@
 def feedback_agent_ice(input_data, model_type_choosen):
-    from langchain.llms import HuggingFaceEndpoint
+    from langchain.llms import Together
     from langchain.chains.llm import LLMChain
     from langchain.prompts import PromptTemplate
     import os
@@ -46,12 +46,11 @@ Begin:
     )
 
     # LLM setup
-    llm = HuggingFaceEndpoint(
-        repo_id="google/flan-t5-base",
-        task="text-generation",
-        temperature=0.4,
-        max_new_tokens=150,
-        huggingfacehub_api_token=os.getenv("HF_TOKEN")
+    llm = Together(
+    model="mistralai/Mistral-7B-Instruct-v0.1",  # ✅ Fast and free
+    temperature=0.7,
+    max_tokens=300,
+    together_api_key=os.getenv("TOGETHER_API_KEY")
     )
 
     # Create chain
