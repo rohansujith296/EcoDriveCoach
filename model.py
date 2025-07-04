@@ -11,8 +11,8 @@ from sklearn.metrics import accuracy_score
 
 
 #loading datasets
-ev_data_df = pd.read_csv('/Users/rohansujith/Desktop/Python/EcoDriveCoach/docs/ev_driving_style_dataset.csv')
-ice_data_df = pd.read_csv('/Users/rohansujith/Desktop/Python/EcoDriveCoach/docs/simulated_driving_style_dataset.csv')
+ev_data_df = pd.read_csv("docs/ev_driving_style_dataset.csv")
+ice_data_df = pd.read_csv("docs/simulated_driving_style_dataset.csv")
 
 
 ev_data_df = ev_data_df.drop(columns='trip_id')
